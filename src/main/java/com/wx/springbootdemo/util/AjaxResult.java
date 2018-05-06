@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AjaxUtils {
+public class AjaxResult {
 
     public static final int FAIL_CODE = 0;
     public static final int SUCCESS_CODE = 1;
@@ -16,44 +16,44 @@ public class AjaxUtils {
 
     private String msg;
 
-    public AjaxUtils(){}
+    public AjaxResult(){}
 
-    public AjaxUtils(int code, Object data, String msg){
+    public AjaxResult(int code, Object data, String msg){
         this.code = code;
         this.data = data;
         this.msg = msg;
     }
 
-    public static final AjaxUtils success(){
-        return new AjaxUtils(SUCCESS_CODE, null, null);
+    public static final AjaxResult success(){
+        return new AjaxResult(SUCCESS_CODE, null, null);
     }
 
-    public static final AjaxUtils success(Object data){
-        return new AjaxUtils(SUCCESS_CODE, data, null);
+    public static final AjaxResult success(Object data){
+        return new AjaxResult(SUCCESS_CODE, data, null);
     }
 
-    public static final AjaxUtils success(String msg){
-        return new AjaxUtils(SUCCESS_CODE, null, msg);
+    public static final AjaxResult success(String msg){
+        return new AjaxResult(SUCCESS_CODE, null, msg);
     }
 
-    public static final AjaxUtils success(Object data, String msg){
-        return new AjaxUtils(SUCCESS_CODE, data, msg);
+    public static final AjaxResult success(Object data, String msg){
+        return new AjaxResult(SUCCESS_CODE, data, msg);
     }
 
-    public static final AjaxUtils fail(){
-        return new AjaxUtils(FAIL_CODE, null, null);
+    public static final AjaxResult fail(){
+        return new AjaxResult(FAIL_CODE, null, null);
     }
 
-    public static final AjaxUtils fail(String msg){
-        return new AjaxUtils(FAIL_CODE, null, msg);
+    public static final AjaxResult fail(String msg){
+        return new AjaxResult(FAIL_CODE, null, msg);
     }
 
-    public static final AjaxUtils fail(Object data, String msg){
-        return new AjaxUtils(FAIL_CODE, data, msg);
+    public static final AjaxResult fail(Object data, String msg){
+        return new AjaxResult(FAIL_CODE, data, msg);
     }
 
-    public static final AjaxUtils fail(int code, Object data, String msg){
-        return new AjaxUtils(code, data, msg);
+    public static final AjaxResult fail(int code, Object data, String msg){
+        return new AjaxResult(code, data, msg);
     }
 
     public static final Map successMap(Object data, String msg) {

@@ -54,4 +54,6 @@ public interface SysPermissionMapper {
     int updateByPrimaryKey(SysPermission record);
 
     List<SysPermission> selectByRoleId(int roleId);
+
+    List<SysPermission> selectPermissionByUserId(int uid);
 }

@@ -69,9 +69,16 @@
         </filter>
     </appender>
 
-    <root level="DEBUG">
-        <appender-ref ref="STDOUT" />
-        <appender-ref ref="INFO_FILE" />
-        <appender-ref ref="ERROR_FILE" />
-    </root>
+    <springProfile name="dev">
+        <root level="DEBUG">
+            <appender-ref ref="STDOUT" />
+        </root>
+    </springProfile>
+
+    <springProfile name="test,prod">
+        <root level="INFO">
+            <appender-ref ref="INFO_FILE" />
+            <appender-ref ref="ERROR_FILE" />
+        </root>
+    </springProfile>
 </configuration>

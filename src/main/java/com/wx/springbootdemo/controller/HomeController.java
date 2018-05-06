@@ -1,14 +1,12 @@
 package com.wx.springbootdemo.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.google.common.collect.Maps;
 import com.wx.springbootdemo.shiro.filter.CaptchaAuthenticationFilter;
-import com.wx.springbootdemo.util.AjaxUtils;
+import com.wx.springbootdemo.util.AjaxResult;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +19,7 @@ public class HomeController {
     private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
 
     @RequestMapping("/login")
-    public String login(HttpServletRequest request, Map map) {
+    public AjaxResult login(HttpServletRequest request, Map map) {
 
         LOGGER.info("===跳转至登录页===");
 
@@ -39,25 +37,41 @@ public class HomeController {
             } else if ("kaptchaValidateFailed".equals(exception)) {
                 LOGGER.error("kaptchaValidateFailed -- > 验证码错误");
                 msg = "kaptchaValidateFailed -- > 验证码错误";
+            } else if("org.apache.shiro.authc.AuthenticationException".equals(exception)) {
+                LOGGER.error("用户名或密码错误:[{}]", exception);
+                msg = "用户名或密码错误";
             } else {
                 msg = "else >> "+exception;
                 LOGGER.error("else -- >" + exception);
             }
+        } else {
+            //判断是否已登录
+            if(SecurityUtils.getSubject().isAuthenticated()) {
+                //重复登录直接返回成功
+                LOGGER.info("===当前状态为已登录===");
+                return AjaxResult.success("已登录");
+            } else {
+                //未登录直接访问资源时，客户端直接跳转至登录页
+
+
+                LOGGER.error("===当前状态为未登录，请先登录===");
+                return AjaxResult.fail("0", msg);
+            }
         }
 
-        if(AjaxUtils.isAjaxRequest(request)) {
+        if(AjaxResult.isAjaxRequest(request)) {
             LOGGER.info("===当前请求是ajax===");
-            return JSON.toJSONString(AjaxUtils.fail(msg));
+            return AjaxResult.fail(msg);
         }
         LOGGER.error("===登录异常:[{}], [{}]===", exception, msg);
         map.put("msg", msg);
-        return JSON.toJSONString(AjaxUtils.fail(msg));
+        return AjaxResult.fail(msg);
 
     }
 
     @RequestMapping({"/","/index"})
-    public AjaxUtils index() {
-        return AjaxUtils.success("登录成功");
+    public AjaxResult index() {
+        return AjaxResult.success("登录成功");
     }
 
 /*    @RequestMapping("/noPermission")

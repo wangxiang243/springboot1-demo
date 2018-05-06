@@ -1,7 +1,7 @@
 package com.wx.springbootdemo.exception;
 
 import com.alibaba.fastjson.support.spring.FastJsonJsonView;
-import com.wx.springbootdemo.util.AjaxUtils;
+import com.wx.springbootdemo.util.AjaxResult;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -20,11 +20,11 @@ public class MyHandlerExceptionResolver implements HandlerExceptionResolver {
         FastJsonJsonView fastJsonJsonView = new FastJsonJsonView();
         Map attributes;
         if(ex instanceof UnauthorizedException) {
-            attributes = AjaxUtils.failMap("当前用户无权限");
+            attributes = AjaxResult.failMap("当前用户无权限");
         } else if(ex instanceof UnauthenticatedException) {
-            attributes = AjaxUtils.failMap("当前用户未登录");
+            attributes = AjaxResult.failMap("当前用户未登录");
         } else {
-            attributes = AjaxUtils.failMap(ex.getMessage());
+            attributes = AjaxResult.failMap(ex.getMessage());
         }
         fastJsonJsonView.setAttributesMap(attributes);
         mv.setView(fastJsonJsonView);

@@ -1,10 +1,15 @@
 package com.wx.springbootdemo;
 
+import com.wx.springbootdemo.util.Base64Utils;
+import org.apache.shiro.authc.credential.DefaultPasswordService;
+import org.apache.shiro.authc.credential.PasswordService;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.DefaultHashService;
 import org.apache.shiro.crypto.hash.HashRequest;
 import org.apache.shiro.util.ByteSource;
 import org.junit.Test;
+
+import java.util.Base64;
 
 public class CommonTest {
 
@@ -27,12 +32,36 @@ public class CommonTest {
         String pwd = defaultHashService.computeHash(hashRequest).toHex();
         System.out.println(pwd);
 
-
         SecureRandomNumberGenerator randomNumberGenerator =
                 new SecureRandomNumberGenerator();
         randomNumberGenerator.setSeed("123".getBytes());
         String hex = randomNumberGenerator.nextBytes().toHex();
         System.out.println(hex);
+
+        DefaultPasswordService defaultPasswordService = new DefaultPasswordService();
+//        defaultPasswordService.creat
+//        defaultPasswordService.
+
+
+    }
+
+    public void a(){}
+    protected void b(){}
+    void c(){}
+    private void d(){}
+
+
+    @Test
+    public void testbase64() {
+
+        String sourcefilepath = "/Users/wangxiang/Desktop/sc.jpeg";
+        String base64 = Base64Utils.getFileBase64(sourcefilepath);
+        System.out.println(base64);
+
+        String filepath = "/Users/wangxiang/Desktop/a.jpg";
+        System.out.println(Base64Utils.generateFileByBase64(filepath, base64));
+
+
     }
 
 }

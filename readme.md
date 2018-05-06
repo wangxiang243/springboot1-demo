@@ -1,4 +1,14 @@
 ### springboot1-demo
+
+- 启动mysql
+`mysql.server start`
+
+- 启动redis
+` redis-server &`
+
+- 启动mongo
+`mongod -f /usr/local/etc/mongod.conf`
+
 - 打jar包，并运行
 ```
     mvn clean package  -Dmaven.test.skip=true
