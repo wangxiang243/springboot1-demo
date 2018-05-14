@@ -5,11 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
 @MapperScan("com.wx.springbootdemo.mapper")
-public class SpringbootDemoApplication extends WebMvcConfigurerAdapter {
+public class SpringbootDemoApplication {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringbootDemoApplication.class);
 

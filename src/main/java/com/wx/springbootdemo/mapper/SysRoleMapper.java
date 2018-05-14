@@ -3,6 +3,7 @@ package com.wx.springbootdemo.mapper;
 import com.wx.springbootdemo.entity.SysRole;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SysRoleMapper {
     /**
@@ -54,4 +55,7 @@ public interface SysRoleMapper {
     int updateByPrimaryKey(SysRole record);
 
     List<SysRole> selectByUid(int uid);
+
+    int selectRoleCount(Map param);
+    List<Map> selectRoleList(Map param);
 }

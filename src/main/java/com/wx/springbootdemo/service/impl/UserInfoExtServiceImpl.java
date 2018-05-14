@@ -17,5 +17,9 @@ public class UserInfoExtServiceImpl implements UserInfoExtService{
         return userInfoExtMapper.selectByUsername(username);
     }
 
+    @Override
+    public int saveUserInfoExt(UserInfoExt userInfoExt) {
+        return userInfoExtMapper.insertSelective(userInfoExt);
+    }
 
 }

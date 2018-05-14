@@ -18,6 +18,7 @@ public class MyHandlerExceptionResolver implements HandlerExceptionResolver {
 
         ModelAndView mv = new ModelAndView();
         FastJsonJsonView fastJsonJsonView = new FastJsonJsonView();
+//        fastJsonJsonView.setBeanName("fastJsonJsonView");
         Map attributes;
         if(ex instanceof UnauthorizedException) {
             attributes = AjaxResult.failMap("当前用户无权限");

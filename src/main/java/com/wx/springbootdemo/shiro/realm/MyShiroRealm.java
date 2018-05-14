@@ -6,6 +6,7 @@ import com.wx.springbootdemo.entity.UserInfo;
 import com.wx.springbootdemo.service.SysPermissionService;
 import com.wx.springbootdemo.service.SysRoleService;
 import com.wx.springbootdemo.service.UserInfoService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -47,7 +48,9 @@ public class MyShiroRealm extends AuthorizingRealm {
                 sysPermissionList = sysPermissionService.selectByRoleId(sysRole.getId());
                 if(sysPermissionList != null && sysPermissionList.size() > 0) {
                     for(SysPermission sysPermission : sysPermissionList) {
-                        authorizationInfo.addStringPermission(sysPermission.getPermission());
+                        if(StringUtils.isNotBlank(sysPermission.getPermission())) {
+                            authorizationInfo.addStringPermission(sysPermission.getPermission());
+                        }
                     }
                 }
             }

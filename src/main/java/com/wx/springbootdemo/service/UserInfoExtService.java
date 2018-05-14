@@ -6,4 +6,6 @@ public interface UserInfoExtService {
 
     UserInfoExt selectByUsername(String username);
 
+    int saveUserInfoExt(UserInfoExt userInfoExt);
+
 }

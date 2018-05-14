@@ -55,7 +55,7 @@ public class HomeController {
 
 
                 LOGGER.error("===当前状态为未登录，请先登录===");
-                return AjaxResult.fail("0", msg);
+                return AjaxResult.fail("/user/login", msg);
             }
         }
 

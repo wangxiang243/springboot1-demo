@@ -1,8 +1,10 @@
 package com.wx.springbootdemo.mapper;
 
 import com.wx.springbootdemo.entity.UserInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserInfoMapper {
     /**
@@ -55,5 +57,9 @@ public interface UserInfoMapper {
 
     UserInfo selectByUsername(String username);
 
-    List<UserInfo> selectUserList();
+    int selectUserCount(Map param);
+    List<Map> selectUserList(Map param);
+
+    int deleteUserroleByUID(Integer uid);
+    int saveUserroleList(@Param("userroleList") List<Map> userroleList);
 }

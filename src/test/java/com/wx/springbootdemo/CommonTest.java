@@ -6,6 +6,7 @@ import org.apache.shiro.authc.credential.PasswordService;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.DefaultHashService;
 import org.apache.shiro.crypto.hash.HashRequest;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.util.ByteSource;
 import org.junit.Test;
 
@@ -42,6 +43,12 @@ public class CommonTest {
 //        defaultPasswordService.creat
 //        defaultPasswordService.
 
+        String salt1 = new Md5Hash("wx"+"admin").toString();
+        System.out.println(salt1);
+        HashRequest hashRequest1 = new HashRequest.Builder().setAlgorithmName("md5").setSource(ByteSource.Util.bytes("123456")).setSalt("admin"+salt1).setIterations(2).build();
+        String pwd1 = new DefaultHashService().computeHash(hashRequest1).toHex();
+        System.out.println(pwd1);
+
 
     }
 
@@ -62,6 +69,12 @@ public class CommonTest {
         System.out.println(Base64Utils.generateFileByBase64(filepath, base64));
 
 
+    }
+
+    @Test
+    public void testbyte() {
+        byte b = Byte.parseByte("-128");
+        System.out.println(b);
     }
 
 }

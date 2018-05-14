@@ -124,4 +124,24 @@
     select a.* from sys_role a inner join sys_user_role b on a.id = b.role_id where b.uid = #{uid}
   </select>
 
+  <sql id="selectRoleCond">
+    <where>
+      and available = '0'
+      <if test="description != null">
+        and description like concat('%',#{description},'%')
+      </if>
+    </where>
+  </sql>
+
+  <select id="selectRoleCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(1) from sys_role a
+    <include refid="selectRoleCond" />
+  </select>
+
+  <select id="selectRoleList" parameterType="java.util.Map" resultType="java.util.Map" >
+    select id, description, role from sys_role
+    <include refid="selectRoleCond" />
+    order by id desc
+  </select>
+
 </mapper>
