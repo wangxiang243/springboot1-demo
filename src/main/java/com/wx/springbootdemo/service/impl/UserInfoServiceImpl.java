@@ -12,6 +12,8 @@ import com.wx.springbootdemo.util.UserUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -30,6 +32,11 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public UserInfo selectByUsername(String username) {
         return userInfoMapper.selectByUsername(username);
+    }
+
+    @Override
+    public Map selectUserInfoByUID(Integer uid) {
+        return userInfoExtMapper.selectUserInfoByUID(uid);
     }
 
     @Override
@@ -56,7 +63,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         String name = param.get("name").toString();
         String sourcePassword = param.get("password").toString();
         String salt = new Md5Hash("wx" + username).toString();
-        String password = UserUtils.getPassword(sourcePassword, salt);
+        String password = UserUtils.getPassword(sourcePassword, username+salt);
         byte state = Byte.parseByte("0");
         Date createTime = new Date();
 
@@ -68,6 +75,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public int updateUserInfo(Map param) {
+        return userInfoExtMapper.updateUserInfoExtByUID(param);
+    }
+
+    @Override
+    @Transactional
     public int saveUserSysrole(List<Map> userList, List<Integer> roleIdList) {
 
         Integer uid = Integer.valueOf(userList.get(0).get("uid").toString());
@@ -82,5 +95,12 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         int r = userInfoMapper.saveUserroleList(userroleList);
         return r;
+    }
+
+    @Override
+    public int deleteUserInfoByUID(Integer uid) {
+        int r1 = userInfoMapper.deleteByPrimaryKey(uid);
+        int r2 = userInfoExtMapper.deleteUserInfoExtByUID(uid);
+        return r1+r2;
     }
 }

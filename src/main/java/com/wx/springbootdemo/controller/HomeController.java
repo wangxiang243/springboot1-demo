@@ -26,7 +26,7 @@ public class HomeController {
         // 登录失败从request中获取shiro处理的异常信息。
         // shiroLoginFailure:就是shiro异常类的全类名.
         String exception = (String) request.getAttribute(CaptchaAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
-        String msg = "请先登录";
+        String msg = "";
         if (exception != null) {
             if (UnknownAccountException.class.getName().equals(exception)) {
                 LOGGER.error("UnknownAccountException -- > 账号不存在：");
@@ -69,7 +69,7 @@ public class HomeController {
 
     }
 
-    @RequestMapping({"/","/index"})
+    @RequestMapping({"/","/success"})
     public AjaxResult index() {
         return AjaxResult.success("登录成功");
     }

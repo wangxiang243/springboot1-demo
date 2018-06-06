@@ -7,22 +7,18 @@ import com.wx.springbootdemo.entity.UserInfoExt;
 import com.wx.springbootdemo.service.UserInfoExtService;
 import com.wx.springbootdemo.service.UserInfoService;
 import com.wx.springbootdemo.util.AjaxResult;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +47,13 @@ public class UserInfoController {
         return AjaxResult.success(result);
     }
 
+    @RequestMapping("selectUserInfoByUID")
+    @RequiresPermissions("userinfo:list")
+    public AjaxResult selectUserInfoByUID(Integer uid) {
+        Map result = userInfoService.selectUserInfoByUID(uid);
+        return AjaxResult.success(result, "用户查询成功");
+    }
+
     @RequestMapping("selectUserInfoList")
     @RequiresPermissions("userinfo:list")
     public AjaxResult selectUserInfoList(@RequestParam Map param) {
@@ -60,21 +63,42 @@ public class UserInfoController {
         return AjaxResult.success(result, "用户查询成功");
     }
 
-    @RequestMapping("userAdd")
-    @RequiresPermissions("userInfo:add")
-    public String userAdd() {
-        return "添加用户";
+    @RequestMapping("saveUserInfo")
+    @RequiresPermissions(value = {"userInfo:add", "userinfo:edit"}, logical = Logical.OR)
+    public AjaxResult saveUserInfo(@RequestBody Map param) {
+        if(param == null) {
+            return AjaxResult.fail("用户信息不能为空!");
+        }
+        if(param.get("username") == null || StringUtils.isBlank(param.get("username").toString())) {
+            return AjaxResult.fail("用户账号不能为空!");
+        }
+        if(param.get("name") == null || StringUtils.isBlank(param.get("name").toString())) {
+            return AjaxResult.fail("用户姓名不能为空!");
+        }
+        if(param.get("password") == null || StringUtils.isBlank(param.get("password").toString())) {
+            return AjaxResult.fail("密码不能为空!");
+        }
+        if(param.get("uid") == null || StringUtils.isBlank(param.get("uid").toString())) {
+            userInfoService.saveUserInfo(param);
+            return AjaxResult.success("用户添加成功");
+        } else {
+            userInfoService.updateUserInfo(param);
+            return AjaxResult.success("用户编辑成功");
+        }
     }
 
-    @RequestMapping("userDel")
+    @RequestMapping("deleteUserInfoByUID")
     @RequiresPermissions("userInfo:del")
-    public String userDel() {
-        return "删除用户";
+    public AjaxResult deleteUserInfoByUID(@RequestParam Integer uid) {
+        if(uid == null) {
+            return AjaxResult.fail("用户id不能为空!");
+        }
+        userInfoService.deleteUserInfoByUID(uid);
+        return AjaxResult.success("用户删除成功");
     }
 
     @RequestMapping("saveUserSysrole")
     @RequiresPermissions("userinfo:auth")
-    @Transactional
     public AjaxResult saveUserSysrole(@RequestBody String param) {
         LOGGER.info("===param:[{}]===", param);
         if(param == null || StringUtils.isBlank(param)) {
@@ -94,6 +118,27 @@ public class UserInfoController {
         }
         userInfoService.saveUserSysrole(userList, roleList);
         return AjaxResult.success("用户角色授权成功");
+    }
+
+
+    @RequestMapping("test")
+    public AjaxResult test() {
+        userInfoExtService.test();
+        return AjaxResult.success("用户信息redis缓存测试");
+    }
+
+    @RequestMapping("selectUserInfoExtById")
+    public AjaxResult selectUserInfoExtById() {
+        UserInfoExt userInfoExt = userInfoExtService.selectUserInfoExtById(1);
+        UserInfoExt userInfoExt1 = userInfoExtService.selectUserInfoExtById(1);
+        UserInfoExt userInfoExt2 = userInfoExtService.selectUserInfoExtById(11);
+        return AjaxResult.success(userInfoExt, "获取userInfoExt成功");
+    }
+
+    @RequestMapping("deleteUserInfoExtById")
+    public AjaxResult deleteUserInfoExtById() {
+        userInfoExtService.deleteUserInfoExtById(1);
+        return AjaxResult.success("删除userInfoExt成功");
     }
 
 }

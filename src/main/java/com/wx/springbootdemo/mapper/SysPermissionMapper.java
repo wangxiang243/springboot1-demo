@@ -3,6 +3,7 @@ package com.wx.springbootdemo.mapper;
 import com.wx.springbootdemo.entity.SysPermission;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SysPermissionMapper {
     /**
@@ -55,5 +56,11 @@ public interface SysPermissionMapper {
 
     List<SysPermission> selectByRoleId(int roleId);
 
-    List<SysPermission> selectPermissionByUserId(int uid);
+    List<SysPermission> selectPermissionByUserId(Map param);
+
+    List<SysPermission> selectSysPermissionList(Map param);
+
+    int saveSyspermission(Map param);
+
+    int deleteByIds(List<Map> ids);
 }

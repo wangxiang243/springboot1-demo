@@ -1,6 +1,7 @@
 package com.wx.springbootdemo;
 
 import com.wx.springbootdemo.util.Base64Utils;
+import com.wx.springbootdemo.util.UserUtils;
 import org.apache.shiro.authc.credential.DefaultPasswordService;
 import org.apache.shiro.authc.credential.PasswordService;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
@@ -73,8 +74,18 @@ public class CommonTest {
 
     @Test
     public void testbyte() {
-        byte b = Byte.parseByte("-128");
-        System.out.println(b);
+        String username = "system";
+        String sourcePassword = "123456";
+        String salt = username+new Md5Hash("wx" + username).toString();
+        String password = UserUtils.getPassword(sourcePassword, salt);
+        System.out.println("salt:"+salt);
+        System.out.println("password:"+password);
+
+        username = "ccc";
+        salt = username+new Md5Hash("wx"+username).toString();
+        password = UserUtils.getPassword(sourcePassword, salt);
+        System.out.println("salt:"+salt);
+        System.out.println("password:"+password);
     }
 
 }

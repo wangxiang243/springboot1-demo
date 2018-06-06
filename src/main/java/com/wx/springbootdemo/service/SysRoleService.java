@@ -11,4 +11,16 @@ public interface SysRoleService {
 
     Map selectRolePageList(Map param);
 
+    int saveRole(SysRole sysRole);
+
+    SysRole selectById(Integer id);
+
+    int updateRole(SysRole sysRole);
+
+    int deleteRoleById(Integer id);
+
+    List<Integer> selectSyspermissionByRoleId(Integer roleId);
+
+    int saveSysRolePermission(List<Map> sysRolePermissionList);
+
 }

@@ -1,6 +1,8 @@
 package com.wx.springbootdemo.service;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.wx.springbootdemo.SpringbootDemoApplication;
 import com.wx.springbootdemo.entity.UserInfo;
 import com.wx.springbootdemo.mapper.UserInfoMapper;
 import org.junit.Test;
@@ -9,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = SpringbootDemoApplication.class)
 public class TestUserInfoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestUserInfoService.class);
@@ -62,6 +65,20 @@ public class TestUserInfoService {
             System.out.println(r);
         }
 
+    }
+
+    @Test
+    @Rollback(false)
+    public void test() {
+        List<Map> userList = Lists.newArrayList();
+        Map userMap = Maps.newLinkedHashMap();
+        userMap.put("uid", 82);
+        userList.add(userMap);
+        List<Integer> roleList = Lists.newArrayList();
+        roleList.add(1);
+        roleList.add(2);
+        int r = userInfoService.saveUserSysrole(userList, roleList);
+        System.out.println(r);
     }
 
 }

@@ -8,4 +8,10 @@ public interface UserInfoExtService {
 
     int saveUserInfoExt(UserInfoExt userInfoExt);
 
+    UserInfoExt selectUserInfoExtById(Integer id);
+
+    void deleteUserInfoExtById(Integer id);
+
+    void test();
+
 }

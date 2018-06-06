@@ -8,7 +8,7 @@
       This element was generated on Wed Mar 21 17:32:39 CST 2018.
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="available" jdbcType="BIT" property="available" />
+    <result column="available" jdbcType="INTEGER" property="available" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="parent_id" jdbcType="BIGINT" property="parentId" />
     <result column="parent_ids" jdbcType="VARCHAR" property="parentIds" />
@@ -171,15 +171,87 @@
     select a.* from sys_permission a inner join sys_role_permission b on a.id = b.permission_id where b.role_id = #{roleId}
   </select>
   
-  <select id="selectPermissionByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectPermissionByUserId" parameterType="java.util.Map" resultMap="BaseResultMap">
     select e.*
     from `user_info` a
 	join `sys_user_role` b on a.`uid` = b.`uid`
  	join `sys_role` c on b.`role_id` = c.`id`
-	join `sys_role_permission` d on b.`role_id` = c.`id`
+	join `sys_role_permission` d on d.`role_id` = c.`id`
 	join `sys_permission` e on d.`permission_id` = e.`id`
-    where c.`available` = 0 and e.`available` = 0 and `resource_type` = 'menu'
+    where c.`available` = 0 and e.`available` = 0
     and a.uid = #{uid}
+    <if test="resourceType != null and resourceType !='' ">
+      and `resource_type` = #{resourceType}
+    </if>
   </select>
+
+  <select id="selectSysPermissionList" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select * from sys_permission
+    <where>
+      <if test="resourceType != null and resourceType!='' ">
+        resource_type = #{resourceType}
+      </if>
+    </where>
+  </select>
+
+  <insert id="saveSyspermission" parameterType="java.util.Map">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="available != null">
+        available,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="parentIds != null">
+        parent_ids,
+      </if>
+      <if test="permission != null">
+        permission,
+      </if>
+      <if test="resourceType != null">
+        resource_type,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="available != null">
+        #{available,jdbcType=BIT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="parentIds != null">
+        #{parentIds,jdbcType=VARCHAR},
+      </if>
+      <if test="permission != null">
+        #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceType != null">
+        #{resourceType,jdbcType=CHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByIds" parameterType="java.util.List">
+    delete from sys_permission where id in 
+    <foreach collection="list" separator="," item="item" open="(" close=")" >
+      #{item.id}
+    </foreach>
+  </delete>
 
 </mapper>

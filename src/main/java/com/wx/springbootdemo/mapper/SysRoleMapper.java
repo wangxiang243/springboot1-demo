@@ -58,4 +58,13 @@ public interface SysRoleMapper {
 
     int selectRoleCount(Map param);
     List<Map> selectRoleList(Map param);
+
+    int deleteSysUserRole(Map param);
+
+    List<Integer> selectSyspermissionByRoleId(Integer roleId);
+
+    int deleteSysRolePermission(Integer roleId);
+
+    int saveSysRolePermission(List<Map> sysRolePermissionList);
+
 }
