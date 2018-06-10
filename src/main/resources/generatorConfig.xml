@@ -43,7 +43,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="user_info_ext" domainObjectName="UserInfoExt" enableCountByExample="false" enableUpdateByExample="false"
+        <table tableName="t_s_product_goods_publish" domainObjectName="ProductGoodsPublish" enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
             <!--<property name="useActualColumnNames" value="true"/>-->
