@@ -11,12 +11,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringbootDemoApplication.class)
@@ -29,6 +32,9 @@ public class TestUserInfoService {
 
     @Autowired
     private UserInfoMapper userInfoMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Test
     public void testfindByUsername() {
@@ -79,6 +85,19 @@ public class TestUserInfoService {
         roleList.add(2);
         int r = userInfoService.saveUserSysrole(userList, roleList);
         System.out.println(r);
+    }
+
+    @Test
+    public void testRedisOps() {
+
+        //存储set操作
+        Set<String> stringSet = new HashSet<>();
+        stringSet.add("set1");
+        stringSet.add("set2");
+        stringSet.add("set3");
+        redisTemplate.opsForSet().add("stringSet", stringSet);
+        Set<String> resultStringSet = redisTemplate.opsForSet().members("stringSet");
+        System.out.println(resultStringSet);
     }
 
 }

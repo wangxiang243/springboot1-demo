@@ -43,9 +43,9 @@ public class MySqlParserUtils {
         if(sqlSelectQuery.getWhere() != null) {
             out.append(" WHERE ");
             sqlSelectQuery.getWhere().accept(sqlastOutputVisitor);
-            out.append(" AND " + condition);
+            out.append(" AND ").append(condition);
         } else {
-            out.append(" WHERE " + condition);
+            out.append(" WHERE ").append(condition);
         }
 
         //解析orderby
