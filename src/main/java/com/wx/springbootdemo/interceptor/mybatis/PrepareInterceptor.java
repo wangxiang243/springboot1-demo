@@ -77,6 +77,7 @@ public class PrepareInterceptor implements Interceptor {
                         conditionStringbuilder.append(sysDataRule.getRuleValue());
                     }
                     String newSql = MySqlParserUtils.parseSelectSqlStatementAndAddWhereCondition(boundSql.getSql(), conditionStringbuilder.toString());
+                    //todo 替换全局约定参数
                     ReflectUtil.setFieldValue(boundSql, "sql", newSql);
                 }
             }
