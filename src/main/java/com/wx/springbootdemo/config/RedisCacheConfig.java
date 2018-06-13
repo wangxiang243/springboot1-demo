@@ -59,6 +59,7 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
         RedisSerializer<String> redisSerializer = new StringRedisSerializer();//Long类型不可以会出现异常信息;
         redisTemplate.setKeySerializer(redisSerializer);
         redisTemplate.setHashKeySerializer(redisSerializer);
+//        redisTemplate.setValueSerializer(redisSerializer);
         return redisTemplate;
     }
 
